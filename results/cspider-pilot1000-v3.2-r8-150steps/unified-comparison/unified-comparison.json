@@ -1,0 +1,327 @@
+{
+  "base_path": "/home/ykc/llm-deploy/training/qwen3-14b-cspider/results/base-gate0.jsonl",
+  "base": {
+    "rows": 200,
+    "api_success": 200,
+    "executable": 192,
+    "invalid_sql": 8,
+    "sql_executable_rate": 0.96,
+    "correct": 145,
+    "execution_accuracy": 0.725,
+    "by_difficulty": {
+      "easy": {
+        "n": 30,
+        "api_success": 30,
+        "executable": 29,
+        "correct": 28
+      },
+      "medium": {
+        "n": 90,
+        "api_success": 90,
+        "executable": 87,
+        "correct": 64
+      },
+      "hard": {
+        "n": 60,
+        "api_success": 60,
+        "executable": 57,
+        "correct": 39
+      },
+      "extra": {
+        "n": 20,
+        "api_success": 20,
+        "executable": 19,
+        "correct": 14
+      }
+    }
+  },
+  "pre_registered_gate": {
+    "rows": 200,
+    "api_success": 200,
+    "correct_min": 150,
+    "sql_executable_rate_min": 0.96,
+    "invalid_sql_max": 8,
+    "medium_correct_min": 64,
+    "hard_correct_min": 39,
+    "extra_correct_min": 14,
+    "net_fixed_min": 5
+  },
+  "candidates": {
+    "checkpoint-100": {
+      "path": "/home/ykc/llm-deploy/training/qwen3-14b-cspider/results/cspider-pilot1000-v3.2-r8-150steps/checkpoint-100-gate200.jsonl",
+      "metrics": {
+        "rows": 200,
+        "api_success": 200,
+        "executable": 190,
+        "invalid_sql": 10,
+        "sql_executable_rate": 0.95,
+        "correct": 147,
+        "execution_accuracy": 0.735,
+        "by_difficulty": {
+          "easy": {
+            "n": 30,
+            "api_success": 30,
+            "executable": 29,
+            "correct": 27
+          },
+          "medium": {
+            "n": 90,
+            "api_success": 90,
+            "executable": 85,
+            "correct": 64
+          },
+          "hard": {
+            "n": 60,
+            "api_success": 60,
+            "executable": 57,
+            "correct": 44
+          },
+          "extra": {
+            "n": 20,
+            "api_success": 20,
+            "executable": 19,
+            "correct": 12
+          }
+        }
+      },
+      "delta_correct": 2,
+      "delta_accuracy_pp": 1.0,
+      "fixed": 12,
+      "regressed": 10,
+      "net_fixed": 2,
+      "fixed_by_difficulty": {
+        "medium": 5,
+        "hard": 6,
+        "extra": 1
+      },
+      "regressed_by_difficulty": {
+        "extra": 3,
+        "easy": 1,
+        "medium": 5,
+        "hard": 1
+      },
+      "mcnemar_exact_p": 0.8318119049072266,
+      "failure_reasons": [
+        [
+          "EXECUTABLE_WRONG",
+          43
+        ],
+        [
+          "INVALID_NO_SUCH_COLUMN",
+          4
+        ],
+        [
+          "INVALID_INTERRUPTED",
+          3
+        ],
+        [
+          "INVALID_OTHER",
+          2
+        ],
+        [
+          "INVALID_PARAMETER",
+          1
+        ]
+      ],
+      "gate_checks": {
+        "rows_200": true,
+        "api_success_200": true,
+        "correct_gain_at_least_5": false,
+        "sql_executable_rate_at_least_96pct": false,
+        "invalid_sql_at_most_8": false,
+        "medium_not_below_base": true,
+        "hard_not_below_base": true,
+        "extra_not_below_base": false,
+        "net_fixed_at_least_5": false
+      },
+      "final_gate": "FAIL"
+    },
+    "checkpoint-125": {
+      "path": "/home/ykc/llm-deploy/training/qwen3-14b-cspider/results/cspider-pilot1000-v3.2-r8-150steps/checkpoint-125-gate200.jsonl",
+      "metrics": {
+        "rows": 200,
+        "api_success": 200,
+        "executable": 190,
+        "invalid_sql": 10,
+        "sql_executable_rate": 0.95,
+        "correct": 147,
+        "execution_accuracy": 0.735,
+        "by_difficulty": {
+          "easy": {
+            "n": 30,
+            "api_success": 30,
+            "executable": 29,
+            "correct": 27
+          },
+          "medium": {
+            "n": 90,
+            "api_success": 90,
+            "executable": 84,
+            "correct": 66
+          },
+          "hard": {
+            "n": 60,
+            "api_success": 60,
+            "executable": 58,
+            "correct": 40
+          },
+          "extra": {
+            "n": 20,
+            "api_success": 20,
+            "executable": 19,
+            "correct": 14
+          }
+        }
+      },
+      "delta_correct": 2,
+      "delta_accuracy_pp": 1.0,
+      "fixed": 14,
+      "regressed": 12,
+      "net_fixed": 2,
+      "fixed_by_difficulty": {
+        "medium": 8,
+        "hard": 5,
+        "extra": 1
+      },
+      "regressed_by_difficulty": {
+        "extra": 1,
+        "hard": 4,
+        "easy": 1,
+        "medium": 6
+      },
+      "mcnemar_exact_p": 0.8450189828872681,
+      "failure_reasons": [
+        [
+          "EXECUTABLE_WRONG",
+          43
+        ],
+        [
+          "INVALID_NO_SUCH_COLUMN",
+          4
+        ],
+        [
+          "INVALID_INTERRUPTED",
+          3
+        ],
+        [
+          "INVALID_PARAMETER",
+          1
+        ],
+        [
+          "INVALID_SYNTAX",
+          1
+        ],
+        [
+          "INVALID_OTHER",
+          1
+        ]
+      ],
+      "gate_checks": {
+        "rows_200": true,
+        "api_success_200": true,
+        "correct_gain_at_least_5": false,
+        "sql_executable_rate_at_least_96pct": false,
+        "invalid_sql_at_most_8": false,
+        "medium_not_below_base": true,
+        "hard_not_below_base": true,
+        "extra_not_below_base": true,
+        "net_fixed_at_least_5": false
+      },
+      "final_gate": "FAIL"
+    },
+    "checkpoint-150": {
+      "path": "/home/ykc/llm-deploy/training/qwen3-14b-cspider/results/cspider-pilot1000-v3.2-r8-150steps/checkpoint-150-gate200.jsonl",
+      "metrics": {
+        "rows": 200,
+        "api_success": 200,
+        "executable": 188,
+        "invalid_sql": 12,
+        "sql_executable_rate": 0.94,
+        "correct": 147,
+        "execution_accuracy": 0.735,
+        "by_difficulty": {
+          "easy": {
+            "n": 30,
+            "api_success": 30,
+            "executable": 29,
+            "correct": 27
+          },
+          "medium": {
+            "n": 90,
+            "api_success": 90,
+            "executable": 83,
+            "correct": 65
+          },
+          "hard": {
+            "n": 60,
+            "api_success": 60,
+            "executable": 57,
+            "correct": 40
+          },
+          "extra": {
+            "n": 20,
+            "api_success": 20,
+            "executable": 19,
+            "correct": 15
+          }
+        }
+      },
+      "delta_correct": 2,
+      "delta_accuracy_pp": 1.0,
+      "fixed": 14,
+      "regressed": 12,
+      "net_fixed": 2,
+      "fixed_by_difficulty": {
+        "medium": 8,
+        "hard": 5,
+        "extra": 1
+      },
+      "regressed_by_difficulty": {
+        "hard": 4,
+        "easy": 1,
+        "medium": 7
+      },
+      "mcnemar_exact_p": 0.8450189828872681,
+      "failure_reasons": [
+        [
+          "EXECUTABLE_WRONG",
+          41
+        ],
+        [
+          "INVALID_NO_SUCH_COLUMN",
+          6
+        ],
+        [
+          "INVALID_INTERRUPTED",
+          3
+        ],
+        [
+          "INVALID_PARAMETER",
+          1
+        ],
+        [
+          "INVALID_SYNTAX",
+          1
+        ],
+        [
+          "INVALID_OTHER",
+          1
+        ]
+      ],
+      "gate_checks": {
+        "rows_200": true,
+        "api_success_200": true,
+        "correct_gain_at_least_5": false,
+        "sql_executable_rate_at_least_96pct": false,
+        "invalid_sql_at_most_8": false,
+        "medium_not_below_base": true,
+        "hard_not_below_base": true,
+        "extra_not_below_base": true,
+        "net_fixed_at_least_5": false
+      },
+      "final_gate": "FAIL"
+    }
+  },
+  "winner": null,
+  "overall_result": "FAIL"
+}

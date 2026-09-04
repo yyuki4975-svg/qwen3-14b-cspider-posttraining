@@ -1,0 +1,85 @@
+{
+  "build_version": "cspider-pilot1000-v3.2-20260819",
+  "seed": 20260819,
+  "source_train": "/home/ykc/llm-deploy/training/qwen3-14b-cspider/data/cspider-gate0-v1/train.jsonl",
+  "gate_excluded": "/home/ykc/llm-deploy/training/qwen3-14b-cspider/data/cspider-gate0-v1/gate_dev200.jsonl",
+  "database_search_root": "/home/ykc/llm-deploy/training/qwen3-14b-cspider",
+  "max_tokens": 2048,
+  "rows": 1000,
+  "difficulty_quotas": {
+    "easy": 100,
+    "medium": 434,
+    "hard": 326,
+    "extra": 140
+  },
+  "selected_by_difficulty": {
+    "medium": 434,
+    "hard": 326,
+    "extra": 140,
+    "easy": 100
+  },
+  "capability_minimums": {
+    "schema_linking_join": 250,
+    "projection_distinct_return": 200,
+    "aggregation_group_having": 200,
+    "nested_set_operation": 160,
+    "argmax_argmin": 100,
+    "literal_copy": 120
+  },
+  "candidate_capability_availability": {
+    "projection_distinct_return": 1367,
+    "schema_linking_join": 631,
+    "aggregation_group_having": 605,
+    "literal_copy": 133,
+    "argmax_argmin": 204,
+    "nested_set_operation": 187
+  },
+  "selected_by_capability": {
+    "projection_distinct_return": 998,
+    "schema_linking_join": 560,
+    "nested_set_operation": 176,
+    "aggregation_group_having": 520,
+    "literal_copy": 129,
+    "argmax_argmin": 196
+  },
+  "selected_by_family": {
+    "join": 289,
+    "nested": 88,
+    "set_operation": 88,
+    "group_having": 297,
+    "aggregation": 105,
+    "basic": 66,
+    "order_limit": 67
+  },
+  "gold_sql_executable": 1000,
+  "gate_overlap": 0,
+  "unique_ids": 1000,
+  "unique_prompts": 1000,
+  "unique_database_sql_pairs": 1000,
+  "unique_exact_sql_texts": 1000,
+  "unique_sql_structures": 1000,
+  "unique_databases": 124,
+  "token_statistics": {
+    "min": 131,
+    "mean": 344.3,
+    "p50": 268.0,
+    "p95": 730,
+    "max": 1666
+  },
+  "candidate_rejects": {
+    "chinese_literal_not_copied_from_prompt": 10,
+    "duplicate_db_sql": 115
+  },
+  "quality_gates": {
+    "rows_exactly_1000": true,
+    "difficulty_quotas_exact": true,
+    "capability_minimums_met": true,
+    "all_gold_sql_executable": true,
+    "gate_overlap_zero": true,
+    "all_tokens_within_limit": true,
+    "unique_ids": true,
+    "unique_prompts": true,
+    "unique_database_sql_pairs": true
+  },
+  "final_gate": "PASS"
+}

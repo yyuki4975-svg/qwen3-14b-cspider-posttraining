@@ -1,0 +1,49 @@
+# Credentials
+.env
+.env.*
+*.key
+api.key
+**/api.key
+*credential*
+*secret*
+
+# Runtime state
+run/
+**/run/
+*.pid
+*.log
+wandb/
+**/wandb/
+runs/
+**/runs/
+
+# Python cache
+__pycache__/
+**/__pycache__/
+*.py[cod]
+.cache/
+**/.cache/
+
+# Model and optimizer files
+outputs/
+*.safetensors
+*.pt
+*.pth
+*.bin
+*.tfevents*
+
+# Raw and generated datasets
+raw/
+*.parquet
+*.jsonl
+
+# Keep only manifests and checksums from processed data
+data/**
+!data/**/
+!data/**/manifest.json
+!data/**/sha256sums.txt
+
+# Per-example evaluation output
+evaluation/**/run/
+evaluation/**/*.jsonl
+results/**/*.jsonl

@@ -1,0 +1,27 @@
+{
+  "build": "cspider-pilot600-v2",
+  "seed": 20260819,
+  "source": "/home/ykc/llm-deploy/training/qwen3-14b-cspider/data/cspider-gate0-v1/train.jsonl",
+  "gate_excluded": "/home/ykc/llm-deploy/training/qwen3-14b-cspider/data/cspider-gate0-v1/gate_dev200.jsonl",
+  "max_tokens": 2048,
+  "rows": 600,
+  "quotas": {
+    "easy": 90,
+    "medium": 240,
+    "hard": 150,
+    "extra": 120
+  },
+  "selected": {
+    "medium": 240,
+    "easy": 90,
+    "hard": 150,
+    "extra": 120
+  },
+  "token_statistics": {
+    "min": 2,
+    "max": 2,
+    "mean": 2.0
+  },
+  "unique_databases": 124,
+  "rejects": {}
+}

@@ -1,0 +1,28 @@
+{
+  "rows": 200,
+  "api_success": 200,
+  "sql_executable_rate": 0.945,
+  "execution_accuracy": 0.735,
+  "by_difficulty": {
+    "easy": {
+      "n": 30,
+      "executable_rate": 0.9667,
+      "execution_accuracy": 0.9
+    },
+    "medium": {
+      "n": 90,
+      "executable_rate": 0.9333,
+      "execution_accuracy": 0.7222
+    },
+    "hard": {
+      "n": 60,
+      "executable_rate": 0.95,
+      "execution_accuracy": 0.7
+    },
+    "extra": {
+      "n": 20,
+      "executable_rate": 0.95,
+      "execution_accuracy": 0.65
+    }
+  }
+}
