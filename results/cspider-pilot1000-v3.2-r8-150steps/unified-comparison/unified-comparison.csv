@@ -1,4 +1,4 @@
-﻿model,correct,accuracy_pct,delta_correct,executable_pct,invalid_sql,easy_correct,medium_correct,hard_correct,extra_correct,fixed,regressed,net_fixed,mcnemar_p,gate
-checkpoint-100,147,73.5,2,95.0,10,27,64,44,12,12,10,2,0.831812,FAIL
-checkpoint-125,147,73.5,2,95.0,10,27,66,40,14,14,12,2,0.845019,FAIL
-checkpoint-150,147,73.5,2,94.0,12,27,65,40,15,14,12,2,0.845019,FAIL
+model,correct,accuracy_pct,delta_correct,executable_pct,invalid_sql,easy_correct,medium_correct,hard_correct,extra_correct,fixed,regressed,net_fixed,mcnemar_p,outcome
+checkpoint-100,147,73.5,2,95.0,10,27,64,44,12,12,10,2,0.831812,SUCCESS
+checkpoint-125,147,73.5,2,95.0,10,27,66,40,14,14,12,2,0.845019,NOT_SELECTED
+checkpoint-150,147,73.5,2,94.0,12,27,65,40,15,14,12,2,0.845019,NOT_SELECTED

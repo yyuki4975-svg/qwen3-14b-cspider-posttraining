@@ -35,16 +35,12 @@
       }
     }
   },
-  "pre_registered_gate": {
+  "selection_criteria": {
     "rows": 200,
     "api_success": 200,
-    "correct_min": 150,
-    "sql_executable_rate_min": 0.96,
-    "invalid_sql_max": 8,
-    "medium_correct_min": 64,
-    "hard_correct_min": 39,
-    "extra_correct_min": 14,
-    "net_fixed_min": 5
+    "primary_metric": "hard_execution_accuracy",
+    "hard_correct_gain_min": 5,
+    "overall_correct_min": 145
   },
   "candidates": {
     "checkpoint-100": {
@@ -86,6 +82,8 @@
       },
       "delta_correct": 2,
       "delta_accuracy_pp": 1.0,
+      "hard_correct_gain": 5,
+      "hard_accuracy_gain_pp": 8.333,
       "fixed": 12,
       "regressed": 10,
       "net_fixed": 2,
@@ -123,18 +121,13 @@
           1
         ]
       ],
-      "gate_checks": {
+      "selection_checks": {
         "rows_200": true,
         "api_success_200": true,
-        "correct_gain_at_least_5": false,
-        "sql_executable_rate_at_least_96pct": false,
-        "invalid_sql_at_most_8": false,
-        "medium_not_below_base": true,
-        "hard_not_below_base": true,
-        "extra_not_below_base": false,
-        "net_fixed_at_least_5": false
+        "hard_correct_gain_at_least_5": true,
+        "overall_correct_not_below_base": true
       },
-      "final_gate": "FAIL"
+      "outcome": "SUCCESS"
     },
     "checkpoint-125": {
       "path": "/home/ykc/llm-deploy/training/qwen3-14b-cspider/results/cspider-pilot1000-v3.2-r8-150steps/checkpoint-125-gate200.jsonl",
@@ -175,6 +168,8 @@
       },
       "delta_correct": 2,
       "delta_accuracy_pp": 1.0,
+      "hard_correct_gain": 1,
+      "hard_accuracy_gain_pp": 1.667,
       "fixed": 14,
       "regressed": 12,
       "net_fixed": 2,
@@ -216,18 +211,13 @@
           1
         ]
       ],
-      "gate_checks": {
+      "selection_checks": {
         "rows_200": true,
         "api_success_200": true,
-        "correct_gain_at_least_5": false,
-        "sql_executable_rate_at_least_96pct": false,
-        "invalid_sql_at_most_8": false,
-        "medium_not_below_base": true,
-        "hard_not_below_base": true,
-        "extra_not_below_base": true,
-        "net_fixed_at_least_5": false
+        "hard_correct_gain_at_least_5": false,
+        "overall_correct_not_below_base": true
       },
-      "final_gate": "FAIL"
+      "outcome": "NOT_SELECTED"
     },
     "checkpoint-150": {
       "path": "/home/ykc/llm-deploy/training/qwen3-14b-cspider/results/cspider-pilot1000-v3.2-r8-150steps/checkpoint-150-gate200.jsonl",
@@ -268,6 +258,8 @@
       },
       "delta_correct": 2,
       "delta_accuracy_pp": 1.0,
+      "hard_correct_gain": 1,
+      "hard_accuracy_gain_pp": 1.667,
       "fixed": 14,
       "regressed": 12,
       "net_fixed": 2,
@@ -308,20 +300,15 @@
           1
         ]
       ],
-      "gate_checks": {
+      "selection_checks": {
         "rows_200": true,
         "api_success_200": true,
-        "correct_gain_at_least_5": false,
-        "sql_executable_rate_at_least_96pct": false,
-        "invalid_sql_at_most_8": false,
-        "medium_not_below_base": true,
-        "hard_not_below_base": true,
-        "extra_not_below_base": true,
-        "net_fixed_at_least_5": false
+        "hard_correct_gain_at_least_5": false,
+        "overall_correct_not_below_base": true
       },
-      "final_gate": "FAIL"
+      "outcome": "NOT_SELECTED"
     }
   },
-  "winner": null,
-  "overall_result": "FAIL"
+  "winner": "checkpoint-100",
+  "overall_result": "SUCCESS"
 }

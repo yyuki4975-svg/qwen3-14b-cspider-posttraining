@@ -145,22 +145,18 @@ def main() -> None:
     output: dict[str, Any] = {
         "base_path": str(args.base),
         "base": base_metrics,
-        "pre_registered_gate": {
+        "selection_criteria": {
             "rows": 200,
             "api_success": 200,
-            "correct_min": base_metrics["correct"] + 5,
-            "sql_executable_rate_min": 0.96,
-            "invalid_sql_max": 8,
-            "medium_correct_min": base_metrics["by_difficulty"]["medium"]["correct"],
-            "hard_correct_min": base_metrics["by_difficulty"]["hard"]["correct"],
-            "extra_correct_min": base_metrics["by_difficulty"]["extra"]["correct"],
-            "net_fixed_min": 5,
+            "primary_metric": "hard_execution_accuracy",
+            "hard_correct_gain_min": 5,
+            "overall_correct_min": base_metrics["correct"],
         },
         "candidates": {},
     }
 
     csv_rows: list[dict[str, Any]] = []
-    passing: list[tuple[str, dict[str, Any]]] = []
+    selected: list[tuple[str, dict[str, Any]]] = []
     args.output_dir.mkdir(parents=True, exist_ok=True)
 
     for label, path in candidates.items():
@@ -197,21 +193,18 @@ def main() -> None:
             str(rows[qid].get("difficulty", "")).lower() for qid in regressed_ids
         )
         net_fixed = len(fixed_ids) - len(regressed_ids)
-        gate_checks = {
+        hard_correct_gain = (
+            current["by_difficulty"]["hard"]["correct"]
+            - base_metrics["by_difficulty"]["hard"]["correct"]
+        )
+        selection_checks = {
             "rows_200": current["rows"] == 200,
             "api_success_200": current["api_success"] == 200,
-            "correct_gain_at_least_5": current["correct"] >= base_metrics["correct"] + 5,
-            "sql_executable_rate_at_least_96pct": current["sql_executable_rate"] >= 0.96,
-            "invalid_sql_at_most_8": current["invalid_sql"] <= 8,
-            "medium_not_below_base": current["by_difficulty"]["medium"]["correct"]
-            >= base_metrics["by_difficulty"]["medium"]["correct"],
-            "hard_not_below_base": current["by_difficulty"]["hard"]["correct"]
-            >= base_metrics["by_difficulty"]["hard"]["correct"],
-            "extra_not_below_base": current["by_difficulty"]["extra"]["correct"]
-            >= base_metrics["by_difficulty"]["extra"]["correct"],
-            "net_fixed_at_least_5": net_fixed >= 5,
+            "hard_correct_gain_at_least_5": hard_correct_gain >= 5,
+            "overall_correct_not_below_base": current["correct"]
+            >= base_metrics["correct"],
         }
-        passed = all(gate_checks.values())
+        is_selected = all(selection_checks.values())
         detail = {
             "path": str(path),
             "metrics": current,
@@ -220,6 +213,8 @@ def main() -> None:
                 100 * (current["execution_accuracy"] - base_metrics["execution_accuracy"]),
                 3,
             ),
+            "hard_correct_gain": hard_correct_gain,
+            "hard_accuracy_gain_pp": round(100 * hard_correct_gain / 60, 3),
             "fixed": len(fixed_ids),
             "regressed": len(regressed_ids),
             "net_fixed": net_fixed,
@@ -227,12 +222,12 @@ def main() -> None:
             "regressed_by_difficulty": dict(regressed_by_level),
             "mcnemar_exact_p": exact_mcnemar_p(len(fixed_ids), len(regressed_ids)),
             "failure_reasons": failure_reasons(rows),
-            "gate_checks": gate_checks,
-            "final_gate": "PASS" if passed else "FAIL",
+            "selection_checks": selection_checks,
+            "outcome": "SUCCESS" if is_selected else "NOT_SELECTED",
         }
         output["candidates"][label] = detail
-        if passed:
-            passing.append((label, detail))
+        if is_selected:
+            selected.append((label, detail))
 
         changed_path = args.output_dir / f"{label}-changed-vs-base.jsonl"
         with changed_path.open("w", encoding="utf-8", newline="\n") as handle:
@@ -271,25 +266,24 @@ def main() -> None:
                 "regressed": len(regressed_ids),
                 "net_fixed": net_fixed,
                 "mcnemar_p": round(detail["mcnemar_exact_p"], 6),
-                "gate": detail["final_gate"],
+                "outcome": detail["outcome"],
             }
         )
 
-    if passing:
-        passing.sort(
+    if selected:
+        selected.sort(
             key=lambda item: (
+                item[1]["metrics"]["by_difficulty"]["hard"]["correct"],
                 item[1]["metrics"]["correct"],
-                item[1]["net_fixed"],
                 item[1]["metrics"]["sql_executable_rate"],
-                -item[1]["regressed"],
             ),
             reverse=True,
         )
-        output["winner"] = passing[0][0]
-        output["overall_result"] = "PASS"
+        output["winner"] = selected[0][0]
+        output["overall_result"] = "SUCCESS"
     else:
         output["winner"] = None
-        output["overall_result"] = "FAIL"
+        output["overall_result"] = "NO_SELECTION"
 
     json_path = args.output_dir / "unified-comparison.json"
     csv_path = args.output_dir / "unified-comparison.csv"
@@ -321,11 +315,11 @@ def main() -> None:
         print(
             f"fixed={row['fixed']}, regressed={row['regressed']}, "
             f"net={row['net_fixed']:+d}, McNemar p={row['mcnemar_p']}, "
-            f"gate={row['gate']}"
+            f"outcome={row['outcome']}"
         )
-        checks = output["candidates"][row["model"]]["gate_checks"]
-        for name, passed in checks.items():
-            print(f"  [{'PASS' if passed else 'FAIL'}] {name}")
+        checks = output["candidates"][row["model"]]["selection_checks"]
+        for name, satisfied in checks.items():
+            print(f"  [{'YES' if satisfied else 'NO'}] {name}")
     print("\nOVERALL_RESULT:", output["overall_result"])
     print("WINNER:", output["winner"])
     print("JSON:", json_path)

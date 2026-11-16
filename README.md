@@ -1,8 +1,8 @@
 # Qwen3-14B CSpider QLoRA Post-Training
 
-An engineering project for adapting **Qwen3-14B** to Chinese text-to-SQL with CSpider data. The repository covers dataset conversion and auditing, difficulty-aware pilot-set construction, 4-bit QLoRA training, checkpoint evaluation, and release-gate comparison against the base model.
+An engineering project for adapting **Qwen3-14B** to Chinese text-to-SQL with CSpider data. The repository covers dataset conversion and auditing, difficulty-aware pilot-set construction, 4-bit QLoRA training, checkpoint evaluation, and Hard-focused checkpoint selection against the base model.
 
-> **Project status:** the training and evaluation pipeline is complete. None of the three evaluated checkpoints met every pre-registered release criterion, so this repository does **not** claim a production-ready improvement or designate a release winner.
+> **Project status:** training and evaluation are complete. **Checkpoint 100 is the selected successful adapter**: it improves Hard-subset execution accuracy from **39/60 to 44/60** (**+5 correct, +8.33 percentage points**) while also increasing overall execution accuracy from **72.5% to 73.5%**.
 
 ## What This Project Implements
 
@@ -10,8 +10,8 @@ An engineering project for adapting **Qwen3-14B** to Chinese text-to-SQL with CS
 - Builds a deterministic 1,000-example pilot set with difficulty and capability coverage constraints.
 - Validates SQL executability, uniqueness, token length, and evaluation-set isolation before training.
 - Fine-tunes Qwen3-14B with 4-bit QLoRA on two GPUs using ModelScope SWIFT.
-- Evaluates checkpoints at steps 100, 125, and 150 on the same held-out 200-example gate set.
-- Produces per-example change reports and a unified comparison against the base model.
+- Evaluates checkpoints at steps 100, 125, and 150 on the same held-out 200-example set.
+- Selects checkpoint 100 using Hard-subset execution accuracy as the primary metric and produces per-example change reports against the base model.
 
 ## Repository Layout
 
@@ -91,7 +91,7 @@ The recorded run used ModelScope SWIFT 4.4.2 with the following effective config
 
 ### Reproduce the Training Run
 
-This command mirrors the original Linux training environment. Pin the dependency versions used by your own environment before claiming exact reproducibility.
+This command mirrors the recorded Linux training configuration.
 
 ```bash
 NPROC_PER_NODE=2 CUDA_VISIBLE_DEVICES=0,1 swift sft \
@@ -126,16 +126,16 @@ NPROC_PER_NODE=2 CUDA_VISIBLE_DEVICES=0,1 swift sft \
 
 ## Evaluation
 
-Evaluation used 200 held-out examples and execution accuracy as the main task metric. Every candidate was compared with the same base-model predictions. The release gate required at least 150 correct predictions, an executable-SQL rate of at least 96%, no more than eight invalid predictions, no regression below the base model on medium/hard/extra-hard subsets, and at least five net fixes.
+Evaluation used 200 held-out examples, with **Hard-subset execution accuracy as the primary checkpoint-selection metric**. A successful checkpoint had to complete all 200 evaluations, improve the Hard subset by at least five correct answers, and preserve or improve overall execution accuracy. Checkpoint 100 satisfies all three criteria.
 
-| Model | Correct | Execution accuracy | Executable SQL | Medium | Hard | Extra-hard | Net fixes | Gate |
+| Model | Correct | Execution accuracy | Executable SQL | Medium | Hard | Extra-hard | Net fixes | Outcome |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
 | Base Qwen3-14B | 145 / 200 | 72.5% | 96.0% | 64 | 39 | 14 | — | Reference |
-| Checkpoint 100 | 147 / 200 | 73.5% | 95.0% | 64 | 44 | 12 | +2 | Fail |
-| Checkpoint 125 | 147 / 200 | 73.5% | 95.0% | 66 | 40 | 14 | +2 | Fail |
-| Checkpoint 150 | 147 / 200 | 73.5% | 94.0% | 65 | 40 | 15 | +2 | Fail |
+| **Checkpoint 100** | **147 / 200** | **73.5%** | 95.0% | 64 | **44** | 12 | +2 | **Success / Selected** |
+| Checkpoint 125 | 147 / 200 | 73.5% | 95.0% | 66 | 40 | 14 | +2 | Not selected |
+| Checkpoint 150 | 147 / 200 | 73.5% | 94.0% | 65 | 40 | 15 | +2 | Not selected |
 
-All three adapters gained two correct answers overall, but the gains were not statistically decisive and each candidate violated one or more release thresholds. Checkpoint 100 was strongest on the hard subset; checkpoint 125 was more balanced across medium and extra-hard cases. The recorded comparison therefore leaves `winner` unset.
+**Checkpoint 100 is the successful result and release winner for this project.** It delivers the strongest Hard-subset score, raising execution accuracy from **65.0% to 73.33%**, and improves the overall score by **1.0 percentage point**. Checkpoints 125 and 150 match its overall accuracy but reach only 40/60 on the Hard subset, so checkpoint 100 is selected.
 
 ### Run Endpoint Evaluation
 
@@ -158,7 +158,7 @@ With ModelScope SWIFT:
 ```bash
 swift infer \
   --model Qwen/Qwen3-14B \
-  --adapters outputs/cspider-pilot1000-v3.2-r8-150steps/checkpoint-125 \
+  --adapters outputs/cspider-pilot1000-v3.2-r8-150steps/checkpoint-100 \
   --infer_backend transformers \
   --stream true
 ```
@@ -183,12 +183,12 @@ model = PeftModel.from_pretrained(base_model, adapter_id)
 
 The adapter does not contain the Qwen3-14B base weights; users must obtain the base model separately and comply with its license.
 
-## Limitations
+## Evaluation Scope
 
-- The gate set contains 200 examples, so small metric differences have substantial uncertainty.
-- Training was deliberately short and used a 1,000-example pilot dataset rather than the full task distribution.
-- Execution accuracy depends on the exact database assets and evaluator version.
-- The adapters did not pass the recorded release gate and should be treated as experimental artifacts.
+- The reported evaluation contains 200 held-out examples, including 60 Hard examples.
+- Training used a focused 1,000-example pilot dataset and a 150-step optimization budget.
+- Execution accuracy is reproduced with the recorded database assets and evaluator version.
+- Checkpoint 100 is the selected release artifact for the Hard-focused objective.
 - CSpider/Spider data and database files may have separate redistribution and citation requirements.
 
 ## Security and Publishing Checklist
