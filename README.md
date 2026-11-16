@@ -1,3 +1,15 @@
+---
+base_model: Qwen/Qwen3-14B
+license: apache-2.0
+pipeline_tag: text-generation
+tags:
+  - qwen3
+  - qlora
+  - text-to-sql
+  - cspider
+  - ms-swift
+---
+
 # Qwen3-14B CSpider QLoRA Post-Training
 
 An engineering project for adapting **Qwen3-14B** to Chinese text-to-SQL with CSpider data. The repository covers dataset conversion and auditing, difficulty-aware pilot-set construction, 4-bit QLoRA training, checkpoint evaluation, and Hard-focused checkpoint selection against the base model.
